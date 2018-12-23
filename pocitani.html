@@ -72,6 +72,11 @@
     const bad=document.querySelector('#bad');
     const good=document.querySelector('#good');
 
+    const rulerContainer = document.querySelector('.rulercontainer');
+    const rulerStart = document.querySelector('.rulercontainer .rulerstart');
+    const rulerValue = document.querySelector('#rulervalue');
+    const title = document.head.querySelector('title');
+
     let max = 20;
     let res;
     let a;
@@ -119,6 +124,24 @@
 
     result.addEventListener('keypress', processResult);
     submit.addEventListener('click', processResult);
+
+    let storedMax = localStorage.getItem('max');
+    if (storedMax) {
+        storedMaxVal = parseInt(storedMax);
+        if (storedMaxVal != NaN) {
+            while (max > storedMaxVal && max > 10) {
+                subRuler();
+                max -= 10;
+            }
+            while (max < storedMaxVal && max < 100) {
+                addRuler();
+                max += 10;
+            }
+            rulerValue.innerText = max;
+            title.innerText = 'Počítání do ' + max;
+        }
+    }
+
     setup();
 
     setInterval(function () {
@@ -126,12 +149,6 @@
             result.focus();
         }
     }, 1000);
-
-
-    const rulerContainer = document.querySelector('.rulercontainer');
-    const rulerStart = document.querySelector('.rulercontainer .rulerstart');
-    const rulerValue = document.querySelector('#rulervalue');
-    const title = document.head.querySelector('title');
 
     rulerContainer.addEventListener('mouseup', function (event) {
         if (showingResult) {
@@ -151,11 +168,11 @@
 
         rulerValue.innerText = max;
         title.innerText = 'Počítání do ' + max;
+        localStorage.setItem('max', max + '');
 
         setup();
     });
     rulerContainer.addEventListener('contextmenu', event => event.preventDefault());
-
 
     function addRuler() {
         let d = document.createElement('div');
