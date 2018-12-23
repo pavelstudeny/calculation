@@ -32,12 +32,13 @@
     position: fixed;
     right: 3em;
     bottom: 3em;
+    cursor: pointer;
 }
 .more {
-    font-size: 38px;
+    font-size: 50px;
 }
 .less {
-    font-size: 38px;
+    font-size: 50px;
 }
 .rulerstart {
     display: inline-block;
@@ -182,6 +183,9 @@
     });
     rulerContainer.addEventListener('contextmenu', event => event.preventDefault());
     rulerContainer.querySelector('.less').addEventListener('mouseup', function (event) {
+        event.stopPropagation();
+        event.preventDefault();
+
         if (max > 10) {
             subRuler();
             max -= 10;
@@ -195,9 +199,6 @@
         localStorage.setItem('max', max + '');
 
         setup();
-
-        event.stopPropagation();
-        event.preventDefault();
     }, true)
 
     function addRuler() {
