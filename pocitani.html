@@ -33,6 +33,12 @@
     right: 3em;
     bottom: 3em;
 }
+.more {
+    font-size: 38px;
+}
+.less {
+    font-size: 38px;
+}
 .rulerstart {
     display: inline-block;
     width: 84px;
@@ -58,9 +64,11 @@
 </div>
 
 <div class="rulercontainer">
+    <span class="more">&#x25C4;</span>
     <div class="rulerstart"></div>
     <div class="rulercont"></div>
     <span id="rulervalue">20</span>
+    <span class="less">&#x25BA;</span>
 </div>
 
 <script>
@@ -173,6 +181,24 @@
         setup();
     });
     rulerContainer.addEventListener('contextmenu', event => event.preventDefault());
+    rulerContainer.querySelector('.less').addEventListener('mouseup', function (event) {
+        if (max > 10) {
+            subRuler();
+            max -= 10;
+        }
+        else {
+            return;
+        }
+
+        rulerValue.innerText = max;
+        title.innerText = 'Počítání do ' + max;
+        localStorage.setItem('max', max + '');
+
+        setup();
+
+        event.stopPropagation();
+        event.preventDefault();
+    }, true)
 
     function addRuler() {
         let d = document.createElement('div');
